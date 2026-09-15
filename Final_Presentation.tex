@@ -11,6 +11,7 @@
 \usepackage{pifont}
 \usepackage{tikz}
 \usepackage{ifthen}
+\usepackage{fontawesome5}
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, decorations.pathreplacing, calc}
 
 \title[Deepfake Detection]{Deepfake Detection}
@@ -393,29 +394,93 @@
 % ---------------------------------------------------
 % SLIDE 5: Proactive Defense -- AI Watermarking
 % ---------------------------------------------------
+
 \begin{frame}{Proactive Defense: Invisible Watermarking}
 \centering
-\begin{tikzpicture}
-  \node[inner sep=0pt] (img) at (0,0) {\includegraphics[width=3.8cm]{images/synthetic_face.png}};
-  \onslide<2->{
-  \foreach \x in {-1.5,-0.8,-0.1,0.6,1.3} {
-    \foreach \y in {-0.8,-0.1,0.5} {
-      \fill[cyan, opacity=0.7] (\x,\y) circle (0.025);
-    }
-  }
-  \node[font=\tiny, blue!50!black, align=center] at (0,-1.5) {imperceptible cryptographic pattern\\embedded at generation time};
-  }
-  \onslide<3->{
-  \node[rectangle, rounded corners, draw, thick, fill=green!12, minimum width=3cm, minimum height=1cm, align=center] (verify) at (5.0,0) {\small Verified:\\\footnotesize AI-Generated};
-  \draw[-{Latex[length=3mm]}, thick] (2.1,0) -- (3.4,0);
-  }
-\end{tikzpicture}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  every node/.style={font=\small},
+  nn/.style={circle, draw, fill=gray!10, minimum size=4mm, inner sep=0pt}
+]
 
-\vspace{0.15cm}
-\pause\pause
+% ---------- AI GENERATIVE MODEL BOX ----------
+\node[draw, rounded corners, fill=gray!5, minimum width=3.8cm, minimum height=3.2cm]
+  (genbox) at (-5.0,0) {};
+\node[font=\bfseries\small, align=center] at (-5.0,1.95) {AI Generative Model};
+
+% inputs
+\node[align=right, font=\footnotesize] (prompt) at (-8.2,0.55) {Text\\Prompt};
+\node[align=right, font=\footnotesize] (context) at (-8.2,-0.55) {Context\\Data};
+\draw[-{Latex[length=2.5mm]}] (prompt.east) -- (-6.85,0.55);
+\draw[-{Latex[length=2.5mm]}] (context.east) -- (-6.85,-0.55);
+
+% mini neural network, layered
+\foreach \y [count=\i] in {0.7,0.25,-0.25,-0.7}
+  \node[nn] (in\i) at (-6.5,\y) {};
+\foreach \y [count=\i] in {0.75,0.35,-0.05,-0.45,-0.85}
+  \node[nn] (hid\i) at (-5.95,\y) {};
+\foreach \y [count=\i] in {0.35,-0.35}
+  \node[nn] (out\i) at (-5.4,\y) {};
+
+\foreach \i in {1,...,4}
+  \foreach \j in {1,...,5}
+    \draw[gray!60, thin] (in\i) -- (hid\j);
+\foreach \j in {1,...,5}
+  \foreach \k in {1,...,2}
+    \draw[gray!60, thin] (hid\j) -- (out\k);
+
+% key + watermark embedder
+\node[font=\large] (key) at (-4.6,1.15) {\faKey};
+\node[font=\tiny, align=center] at (-4.6,1.5) {Cryptographic Key};
+\draw[-{Latex[length=2mm]}, thin] (key) -- (-4.6,0.5);
+
+\node[draw, rounded corners, fill=gray!15, minimum width=1.9cm, minimum height=0.9cm,
+      align=center, font=\tiny, inner sep=3pt] (embedder) at (-4.6,0.0) {Watermark\\Embedder};
+
+% ---------- FACE IMAGE ----------
+\node[inner sep=0pt] (face) at (0,0)
+  {\includegraphics[width=2.4cm]{images/syn.jpg}};
+
+\draw[-{Latex[length=3mm]}, thick] (-3.1,0) -- (-1.35,0);
+
+% magnifying glass over bottom-right corner of face
+\node[font=\large] at (0.95,-1.0) {\faSearch};
+
+% zoomed pattern inset -- pulled down and left, away from verification caption
+\node[draw, thick, fill=green!8, minimum width=1.9cm, minimum height=0.9cm]
+  (zoom) at (2.15,-2.1) {};
+\node[font=\tiny\ttfamily, green!40!black, align=left] at (2.15,-2.1)
+  {01011001\\10110010\\01101011};
+\draw[thin] (1.15,-0.7) -- (1.6,-1.75);
+\draw[thin] (1.3,-1.25) -- (2.4,-1.65);
+
+\node[font=\tiny, blue!50!black, align=center] at (-4.6,-2.0)
+  {imperceptible cryptographic pattern\\embedded at generation time};
+\node[font=\small, align=center] at (-0.8,-2.0)
+  {Perceptually Clean\\AI-Generated Media};
+
+% ---------- VERIFICATION SYSTEM ----------
+\draw[-{Latex[length=3mm]}, thick] (1.35,0) -- (3.1,0);
+
+\node[draw, rounded corners, fill=gray!5, minimum width=2.5cm, minimum height=1.6cm]
+  (verifbox) at (4.4,0) {};
+\node[font=\bfseries\tiny, align=center] at (4.4,0.95) {Verification System};
+\node[font=\large] at (4.05,0.15) {\faMicroscope};
+\node[font=\large] at (4.75,0.15) {\faCode};
+\node[font=\tiny, align=center] at (4.4,-0.5) {Extracts and checks\\for pattern match};
+
+% ---------- VERIFIED ----------
+\draw[-{Latex[length=3mm]}, thick] (5.65,0) -- (6.75,0);
+\node[rectangle, rounded corners, draw, thick, fill=green!12,
+      minimum width=2.5cm, minimum height=1cm, align=center] (verify) at (8.1,0)
+  {\small Verified:\\\footnotesize AI-Generated};
+
+\end{tikzpicture}%
+}
+
+\vspace{0.2cm}
 {\footnotesize Survives compression, cropping, and screenshots --- so platforms can confirm origin without any loss in quality.}
 \end{frame}
-
 % ---------------------------------------------------
 % SLIDE 6: Summary & The Road Ahead
 % ---------------------------------------------------
