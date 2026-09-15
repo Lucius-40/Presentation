@@ -430,13 +430,23 @@
     \draw[gray!60, thin] (hid\j) -- (out\k);
 
 % key + watermark embedder
+% \node[font=\large] (key) at (-4.6,1.15) {\faKey};
+% \node[font=\tiny, align=center] at (-4.6,1.5) {Cryptographic Key};
+% \draw[-{Latex[length=2mm]}, thin] (key) -- (-4.6,0.5);
+
+% \node[draw, rounded corners, fill=gray!15, minimum width=1.9cm, minimum height=0.9cm,
+%       align=center, font=\tiny, inner sep=3pt] (embedder) at (-4.6,0.0) {Watermark\\Embedder};
+\begin{scope}[shift={(0.4cm,-0.65cm)}]
+
 \node[font=\large] (key) at (-4.6,1.15) {\faKey};
 \node[font=\tiny, align=center] at (-4.6,1.5) {Cryptographic Key};
 \draw[-{Latex[length=2mm]}, thin] (key) -- (-4.6,0.5);
 
 \node[draw, rounded corners, fill=gray!15, minimum width=1.9cm, minimum height=0.9cm,
-      align=center, font=\tiny, inner sep=3pt] (embedder) at (-4.6,0.0) {Watermark\\Embedder};
+      align=center, font=\tiny, inner sep=3pt] (embedder) at (-4.6,0.0)
+      {Watermark\\Embedder};
 
+\end{scope}
 % ---------- FACE IMAGE ----------
 \node[inner sep=0pt] (face) at (0,0)
   {\includegraphics[width=2.4cm]{images/syn.jpg}};
