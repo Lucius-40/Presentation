@@ -1,0 +1,143 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+
+% --- Frutiger Aero Color Palette ---
+\definecolor{AeroSky}{RGB}{14, 165, 233}       % Vibrant sky blue
+\definecolor{AeroDeep}{RGB}{2, 48, 71}         % Deep water contrast blue
+\definecolor{AeroEco}{RGB}{34, 197, 94}        % Aurora/nature green
+\definecolor{AeroGlass}{RGB}{240, 249, 255}    % Glossy base tint
+\definecolor{AeroText}{RGB}{15, 23, 42}        % High-contrast dark text
+
+% --- Typography ---
+\usefonttheme{professionalfonts}
+\renewcommand{\familydefault}{\sfdefault}
+
+% --- Global Theme Elements ---
+\setbeamercolor{structure}{fg=AeroSky}
+\setbeamercolor{normal text}{fg=AeroText}
+\setbeamercolor{title}{fg=white}
+\setbeamercolor{frametitle}{fg=white}
+
+% Disable standard navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+% --- Custom Dynamic Glass Background ---
+\setbeamertemplate{background}{
+    \begin{tikzpicture}[remember picture, overlay]
+        % Glossy Sky-to-Water Gradient
+        \shadedraw [top color=AeroSky!90!white, bottom color=AeroSky!40!AeroEco!20!white, draw=none] 
+            (current picture.north west) rectangle (current picture.south east);
+        
+        % Abstract Aurora/Glass Wave (Skeuomorphic Curve)
+        \fill[white, opacity=0.15] 
+            (current picture.south west) to[out=45,in=225] (current picture.east) 
+            -- (current picture.north east) -- (current picture.north west) -- cycle;
+            
+        % Subtle Eco-Bubble Accents
+        \fill[AeroEco, opacity=0.12] (current picture.south east) ++(-2,-0.5) circle (3cm);
+        \fill[white, opacity=0.08] (current picture.center) ++(-4,2) circle (1.5cm);
+    \end{tikzpicture}
+}
+
+% --- Frutiger Aero "Glass" Blocks ---
+\tcbuselibrary{skins}
+\newtcolorbox{aeroblock}[1]{
+    colback=white!60!AeroGlass,
+    colframe=white,
+    coltitle=white,
+    fonttitle=\bfseries,
+    colbacktitle=AeroSky!85!AeroDeep,
+    enhanced,
+    attach boxed title to top left={yshift=-2mm, xshift=3mm},
+    boxed title style={
+        sharp corners=downhill, 
+        arc=3mm, 
+        colframe=white!80!AeroSky, 
+        interior style={top color=AeroSky, bottom color=AeroSky!70!AeroDeep}
+    },
+    arc=4mm,
+    boxrule=1.5pt,
+    shadow={0.5mm}{-0.5mm}{0mm}{black!10}, % Subtle depth dropping
+    title=#1
+}
+
+% --- Title Slide Template ---
+\setbeamertemplate{title page}{
+    \vbox{}
+    \vfill
+    \begin{centering}
+        \begin{spacing}{1.2}
+            {\usebeamerfont{title}\Huge\bfseries\shadowtext{\inserttitle}}\par
+            \ifx\insertsubtitle\@empty\else
+                \vskip0.25em
+                {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\large\insertsubtitle}\par
+            \fi
+        \end{spacing}
+        \vskip1.5em
+        \begin{tcolorbox}[
+            colback=white!30!AeroGlass, colframe=white!50!AeroSky, 
+            arc=3mm, width=0.6\textwidth, halign=center, boxrule=1pt
+        ]
+            {\color{AeroDeep}\small\textbf{\insertauthor}}\\
+            {\color{AeroDeep!80}\scriptsize\insertdate}
+        \end{tcolorbox}
+    \end{centering}
+    \vfill
+}
+
+% --- Header Template ---
+\setbeamertemplate{frametitle}{
+    \nointerlineskip
+    \begin{beamercolorbox}[wd=\paperwidth,ht=4.5ex,dp=1.5ex]{frametitle}
+        \centering
+        \begin{tikzpicture}[remember picture, overlay]
+            \shadedraw [top color=AeroDeep, bottom color=AeroSky!90!AeroDeep, draw=none] 
+                (-0.5\paperwidth,-0.5ex) rectangle (0.5\paperwidth,4.5ex);
+            \fill[white, opacity=0.1] (-0.5\paperwidth,-0.5ex) rectangle (0.5\paperwidth,2ex);
+        \end{tikzpicture}
+        \textbf{\insertframetitle}
+    \end{beamercolorbox}
+}
+
+% --- Presentation Info ---
+\title{Presentation Title Here}
+\subtitle{Exploring the Frutiger Aero Aesthetic}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+% Slide 1: Title
+\begin{frame}[plain]
+    \titlepage
+\end{frame}
+
+% Slide 2: Core Components
+\begin{frame}{System Dashboard}
+    \begin{aeroblock}{Core Environment}
+        Frutiger Aero captures the spirit of tech from roughly 2004 to 2013. It emphasizes nature, optimism, glass-like textures, and deep blues.
+    \end{aeroblock}
+    
+    \vspace{0.3cm}
+    
+    \begin{columns}
+        \begin{column}{0.48\textwidth}
+            \begin{aeroblock}{Key Motifs}
+                \begin{itemize}
+                    \item Water droplets \& bubbles
+                    \item Aurora glass lines
+                    \item Vibrant green grass
+                \end{itemize}
+            \end{aeroblock}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \begin{aeroblock}{UI Philosophy}
+                Skeuomorphic gloss combined with futuristic, hopeful corporate branding.
+            \end{aeroblock}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\end{document}

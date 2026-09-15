@@ -1,0 +1,93 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usetikzlibrary{shadings,calc}
+
+% --- Color Palette ---
+\definecolor{AeroSky}{RGB}{0, 150, 255}     % Radiant Web 2.0 Blue
+\definecolor{AeroGrass}{RGB}{124, 252, 0}   % Eco Green
+\definecolor{AeroBase}{RGB}{235, 245, 255}  % Clean, glassy backdrop
+\definecolor{AeroDark}{RGB}{10, 40, 80}     % High-contrast deep blue text
+
+\setbeamercolor{normal text}{fg=AeroDark, bg=AeroBase}
+\setbeamercolor{title}{fg=white}
+\setbeamercolor{heading}{fg=AeroSky}
+
+% --- Custom Glossy Block Style ---
+\setbeamercolor{block title}{fg=white, bg=AeroSky}
+\setbeamercolor{block body}{fg=AeroDark, bg=white}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+% --- Disable Default Navigation Icons ---
+\setbeamertemplate{navigation symbols}{}
+
+% --- Frutiger Aero Dynamic Background ---
+\setbeamertemplate{background}{
+    \begin{tikzpicture}[remember picture, overlay]
+        % 1. Linear Sky Gradient Backdrop
+        \fill[top color=AeroSky!70!white, bottom color=AeroBase] 
+            (current picture.north west) rectangle (current picture.south east);
+            
+        % 2. Glossy Aero Glass Wave Arc
+        \fill[top color=white!90!AeroSky, bottom color=AeroSky, opacity=0.4]
+            (current picture.south west) 
+            .. controls ($(current picture.south west)+(4,3)$) and ($(current picture.south east)+(-4,1)$) .. 
+            (current picture.south east) -- cycle;
+
+        \fill[top color=white!80!AeroGrass, bottom color=AeroGrass, opacity=0.25]
+            (current picture.south west) 
+            .. controls ($(current picture.south west)+(3,1)$) and ($(current picture.south east)+(-5,2)$) .. 
+            (current picture.south east) -- cycle;
+
+        % 3. Vector Water Droplets / Bubbles 
+        \fill[white, opacity=0.3] ($(current picture.north east)+(-2,-1.5)$) circle (0.4);
+        \fill[white, opacity=0.15] ($(current picture.north east)+(-1.8,-1.3)$) circle (0.2);
+        \fill[white, opacity=0.4] ($(current picture.south west)+(1.5,1.2)$) circle (0.15);
+        \fill[white, opacity=0.2] ($(current picture.south west)+(1.2,0.8)$) circle (0.3);
+    \end{tikzpicture}
+}
+
+% --- Custom Title Page Template ---
+\setbeamertemplate{title page}{
+    \begin{centering}
+        \vspace{2cm}
+        \begin{tikzpicture}
+            % Glossy Title Banner Pod
+            \node[shading=axis, top color=AeroSky, bottom color=AeroDark!80!AeroSky, 
+                  text=white, rounded corners=10pt, inner sep=15pt, width=0.8\paperwidth, align=center] {
+                {\LARGE \textbf{\inserttitle}}\\[3mm]
+                {\small \insertauthor}
+            };
+        \end{tikzpicture}
+    \end{centering}
+}
+
+% --- Core Presentation Metadata ---
+\title{The Return of Frutiger Aero}
+\author{LaTeX Document Systems}
+\date{\today}
+
+\begin{document}
+
+% Slide 1: Title
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% Slide 2: Structural Elements
+\begin{frame}{Designing for the Web 2.0 Era}
+    \begin{itemize}
+        \item \textbf{Skeuomorphism} - Mimicking physical, glossy plastic textures.
+        \item \textbf{Color Scheme} - Vibrant, glowing lime greens and aqua blues.
+        \item \textbf{Optimism} - Highlighting technology harmonizing flawlessly with nature.
+    \end{itemize}
+
+    \vspace{0.4cm}
+
+    \begin{block}{Aero Glass Framework}
+        This Beamer block emulates the container design found in 2000s consumer desktop operating systems.
+    \end{block}
+\end{frame}
+
+\end{document}
