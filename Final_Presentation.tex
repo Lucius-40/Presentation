@@ -391,6 +391,26 @@
 {\footnotesize Voice can be faked too. Cross-checking acoustic cues against mouth movement --- e.g.\ does a ``B'' sound match a closed mouth? --- exposes synthetic audio.}
 \end{frame}
 
+% cat and mouse 
+\begin{frame}{Passive defense is a cat and mouse game}
+\centering
+\begin{tikzpicture}
+  \node[anchor=south west, inner sep=0] (img) at (0,0)
+    {\includegraphics[width=0.95\textwidth,height=5.2cm,keepaspectratio]{images/cat.jpg}};
+
+  % Use normalized coordinates (0-1) relative to the image corners
+  \begin{scope}[x={(img.south east)}, y={(img.north west)}]
+    \node[font=\bfseries\small, fill=orange!20, rounded corners, inner sep=2pt]
+      at (0.33,0.62) {Detection Models};
+    \node[font=\bfseries\small, fill=gray!20, rounded corners, inner sep=2pt]
+      at (0.87,0.18) {Generating Models};
+  \end{scope}
+\end{tikzpicture}
+
+\vspace{0.3cm}
+{\footnotesize As generating models get better at creating realistic fakes, detection models must continuously be upgraded to keep pace.}
+\end{frame}
+
 % ---------------------------------------------------
 % SLIDE 5: Proactive Defense -- AI Watermarking
 % ---------------------------------------------------
