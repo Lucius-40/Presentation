@@ -656,7 +656,7 @@
     \node[lbl, below=0.55cm] (l1) {PREVENT};
     \node[ex, below=0.95cm] {watermarks, access limits};
   \end{scope}
-
+\pause
   \draw[arrowline] (-3.1,0.3) -- (-1.3,0.3);
 
   % DETECT
@@ -667,7 +667,7 @@
     \node[lbl, below=0.65cm] {DETECT};
     \node[ex, below=1.05cm] {spatial, temporal, audio};
   \end{scope}
-
+\pause
   \draw[arrowline] (1.3,0.3) -- (3.1,0.3);
 
 % VERIFY
@@ -700,23 +700,32 @@
   arrowline/.style={-{Latex[length=3mm]}, thick},
   alabel/.style={font=\tiny, align=center}
 ]
-  \node[box] (created) at (-4.3,0) {\textbf{Content}\\\textbf{Created}};
-  \node[box] (cred) at (0,0) {\textbf{Content}\\\textbf{Credentials}\\{\tiny origin \textbullet\ creator \textbullet\ edits}};
-  \node[box] (verify) at (4.3,0) {\textbf{User Can}\\\textbf{Verify}};
+  % Step 1: Show the first box
+  \node<1->[box] (created) at (-4.3,0) {\textbf{Content}\\\textbf{Created}};
 
-  \draw[arrowline] (created) -- node[alabel, above] {signed} (cred);
-  \draw[arrowline] (cred) -- node[alabel, above] {shared} (verify);
+  % Step 2: Show the second box and the arrow connecting to it
+  \node<2->[box] (cred) at (0,0) {\textbf{Content}\\\textbf{Credentials}\\{\tiny origin \textbullet\ creator \textbullet\ edits}};
+  \draw<2->[arrowline] (created) -- node[alabel, above] {signed} (cred);
+
+  % Step 3: Show the third box and the arrow connecting to it
+  \node<3->[box] (verify) at (4.3,0) {\textbf{User Can}\\\textbf{Verify}};
+  \draw<3->[arrowline] (cred) -- node[alabel, above] {shared} (verify);
 \end{tikzpicture}
 
 \vspace{0.9cm}
-\onslide<2->{
+
+% Step 4: Show the comparison text
+\onslide<4->{
 {\footnotesize \textbf{Detection asks:} \textit{``Does this look fake?''}}\\[0.15cm]
 {\footnotesize \textbf{Provenance asks:} \textit{``Can we prove where it came from?''}}
 }
 
 \vspace{0.5cm}
-\pause
+
+% Step 5: Show the footnote text
+\onslide<5->{
 {\tiny C2PA / Content Credentials --- an emerging industry standard.}
+}
 \end{frame}
 
 % ---------------------------------------------------
@@ -733,19 +742,21 @@
     \draw[thick] (0.18,-0.1) circle (0.22);
     \node[capt, below=0.75cm] {\textbf{Multimodal}\\image, video, audio};
   \end{scope}
+\pause
+\begin{scope}[shift={(-1.9,0)}]
+  \draw[thick, fill=green!10] (0,0) circle (0.6);
+  \draw[thick, -{Latex[length=1.8mm]}] (0.28,0) arc (0:300:0.28);
+  \node[capt, below=0.75cm] {\textbf{Continuous}\\ongoing verification};
+\end{scope}
+\pause
 
-  \begin{scope}[shift={(-1.9,0)}]
-    \draw[thick, fill=green!10] (0,0) circle (0.6);
-    \draw[thick, -{Latex[length=1.8mm]}] (0.28,0) arc (0:300:0.28);
-    \node[capt, below=0.75cm] {\textbf{Continuous}\\ongoing verification};
-  \end{scope}
-
-  \begin{scope}[shift={(1.9,0)}]
-    \draw[thick, fill=orange!10] (0,0) circle (0.6);
-    \draw[thick] (0,0.15) circle (0.22);
-    \draw[thick] (-0.1,-0.08) -- (-0.03,-0.22) (0.1,-0.08) -- (0.03,-0.22);
-    \node[capt, below=0.75cm] {\textbf{Standardized}\\provenance by default};
-  \end{scope}
+\begin{scope}[shift={(1.9,0)}]
+  \draw[thick, fill=orange!10] (0,0) circle (0.6);
+  \draw[thick] (0,0.15) circle (0.22);
+  \draw[thick] (-0.1,-0.08) -- (-0.03,-0.22) (0.1,-0.08) -- (0.03,-0.22);
+  \node[capt, below=0.75cm] {\textbf{Standardized}\\provenance by default};
+\end{scope}
+\pause
 
   \begin{scope}[shift={(5.5,0)}]
     \draw[thick, fill=teal!10] (0,0) circle (0.6);
