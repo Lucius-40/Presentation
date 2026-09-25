@@ -300,6 +300,28 @@ Verification is the mirror operation of embedding: given a piece of media and th
     \label{fig:watermark}
 \end{figure}
 
+\subsubsection*{Watermarking in Action}
+As a concrete industrial deployment of generation-time watermarking, Anthropic's Claude models offer an illustrative example. 
+Anthropic's implementation is a version of SynthID-Text, the method Google DeepMind published in Nature in 2024 and deployed on Gemini, 
+demonstrating the convergence of independent AI developers on a shared watermarking paradigm.
+
+The mechanism operates at the token-sampling stage rather than as a post-hoc transformation of the output. 
+During autoregressive generation, a language model frequently faces multiple plausible continuations at a given 
+position (e.g., completing "The sky was" with either "grey" or "cloudy"). In an unwatermarked system, ties among such 
+near-equivalent candidates are resolved via an ordinary pseudorandom number generator. Anthropic's watermarking system 
+instead uses a secret cryptographic key combined with information from the preceding tokens to influence this selection, 
+biasing an otherwise-arbitrary choice according to a hidden, deterministic function of the key and local context.
+
+Critically, this approach preserves output fidelity: every word in a watermarked output remains a word the model could have 
+produced anyway, with nothing added to the text and no hidden characters inserted. Detectability is therefore statistical 
+rather than lexical — no individual sentence appears unusual, and the signal exists only in aggregate across a sufficiently 
+long span of text, requiring roughly 150–200 words for reliable detection. A party holding the key can, in principle, measure 
+agreement between the observed token choices and those the keyed process would have generated, yielding a probabilistic estimate 
+of authorship, while the pattern remains statistically invisible to any party lacking the key.
+
+
+This case illustrates a central trade-off in text watermarking research: robustness to copy-paste propagation and imperceptibility 
+to human readers, at the cost of detection reliability on short passages.
 \subsection{Content Provenance Standards}
 \label{subsec:c2pa}
 
