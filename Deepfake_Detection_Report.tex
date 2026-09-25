@@ -303,7 +303,7 @@ Verification is the mirror operation of embedding: given a piece of media and th
 \subsubsection*{Watermarking in Action}
 As a concrete industrial deployment of generation-time watermarking, Anthropic's Claude models offer an illustrative example. 
 Anthropic's implementation is a version of SynthID-Text, the method Google DeepMind published in Nature in 2024 and deployed on Gemini, 
-demonstrating the convergence of independent AI developers on a shared watermarking paradigm.
+demonstrating the convergence of independent AI developers on a shared watermarking paradigm \cite{dathathri2024scalable}.
 
 The mechanism operates at the token-sampling stage rather than as a post-hoc transformation of the output. 
 During autoregressive generation, a language model frequently faces multiple plausible continuations at a given 
@@ -461,23 +461,9 @@ Deepfake generation and deepfake detection are two sides of the same adversarial
 The goal of this line of research is not a perfect detector; no fixed classifier can remain accurate indefinitely against a generator trained specifically to defeat it. The realistic goal is a layered ecosystem, combining prevention, detection, and verification (Section~\ref{subsec:defense-in-depth}), in which fabricated media is harder to spread convincingly and genuine media is easier to verify. As the underlying technology matures, we expect the balance to continue shifting from after-the-fact detective work toward built-in, cryptographically provable authenticity.
 
 % =====================================================
-\begin{thebibliography}{9}
-
-\bibitem{goodfellow2014}
-I.~J. Goodfellow, J.~Pouget-Abadie, M.~Mirza, B.~Xu, D.~Warde-Farley, S.~Ozair, A.~Courville, and Y.~Bengio, ``Generative Adversarial Networks,'' \textit{Advances in Neural Information Processing Systems (NeurIPS)}, 2014.
-
-\bibitem{rossler2019}
-A.~R\"ossler, D.~Cozzolino, L.~Verdoliva, C.~Riess, J.~Thies, and M.~Nie{\ss}ner, ``FaceForensics++: Learning to Detect Manipulated Facial Images,'' \textit{International Conference on Computer Vision (ICCV)}, 2019.
-
-\bibitem{li2020}
-Y.~Li, X.~Yang, P.~Sun, H.~Qi, and S.~Lyu, ``Celeb-DF: A Large-Scale Challenging Dataset for DeepFake Forensics,'' \textit{IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}, 2020.
-
-\bibitem{agarwal2020}
-S.~Agarwal, H.~Farid, O.~Fried, and M.~Agrawala, ``Detecting Deep-Fake Videos from Phoneme-Viseme Mismatches,'' \textit{CVPR Workshops}, 2020.
-
-\bibitem{c2pa}
-Coalition for Content Provenance and Authenticity (C2PA), \textit{C2PA Technical Specification}, \url{https://c2pa.org}, accessed 2026.
-
-\end{thebibliography}
+% Keep these entries visible until in-text citations are added.
+\nocite{goodfellow2014,rossler2019,li2020,agarwal2020,c2pa}
+\bibliographystyle{plain}
+\bibliography{Deepfake_Detection_Report}
 
 \end{document}
