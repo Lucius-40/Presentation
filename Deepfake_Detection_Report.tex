@@ -22,6 +22,9 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{tikz}
+
+\usepackage{array}
+\usepackage[table]{xcolor}
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning, shadows, fit, calc}
 
 \parindent 0px
@@ -62,7 +65,7 @@
         \begin{tabbing}
             \hspace{5cm} \= \hspace{0.5cm} \kill
             Md. Mufeed Talukder \> : 151 \\
-            Khandoker Md Tanjinul Islam \> : 159 \\
+            Tanjinul Islam \> : 159 \\
             Md Tahmidul Islam \> : 180 \\
         \end{tabbing}
     \end{center}
@@ -189,14 +192,21 @@ Detection strategies fall into two broad categories, summarized in Table~\ref{ta
 
 \begin{table}[H]
     \centering
-    \renewcommand{\arraystretch}{1.5}
-    \begin{tabular}{|p{3.2cm}|p{5.8cm}|p{5.8cm}|}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{5.6cm} >{\raggedright\arraybackslash}p{5.6cm} @{}}
+        \toprule
+        \rowcolor{gray!15}
+        \textbf{Aspect} & \textbf{Passive Detection} & \textbf{Proactive Defense} \\
+        \midrule
         \hline
-        & \textbf{Passive Detection} & \textbf{Proactive Defense} \\ \hline
-        \textbf{When it acts} & After media has been created & At the moment media is created \\ \hline
-        \textbf{Method} & Examines media for hidden artifacts left by the generation process & Embeds a cryptographic watermark or provenance record into the media \\ \hline
-        \textbf{Posture} & Reactive & Preventative \\ \hline
-        \textbf{Typical question} & ``Does this look fake?'' & ``Can we prove where this came from?'' \\ \hline
+        \textbf{When it acts} & After media has been created & At the moment media is created \\
+        \hline
+        \textbf{Method} & Examines media for hidden artifacts left by the generation process & Embeds a cryptographic watermark or provenance record into the media \\
+        \hline
+        \textbf{Posture} & Reactive & Preventative \\
+        \hline
+        \textbf{Typical question} & \textit{``Does this look fake?''} & \textit{``Can we prove where this came from?''} \\
+        \bottomrule
     \end{tabular}
     \caption{Comparison of passive detection and proactive defense.}
     \label{tab:passive-proactive}
@@ -298,14 +308,20 @@ Watermarking answers a narrow question: was this specific pattern present? A bro
 
 \begin{table}[H]
     \centering
-    \renewcommand{\arraystretch}{1.5}
-    \begin{tabular}{|p{4cm}|p{6.5cm}|p{6.5cm}|}
-        \hline
-        & \textbf{Detection} & \textbf{Provenance} \\ \hline
-        \textbf{Question asked} & Does this look fake? & Can we prove where this came from? \\ \hline
-        \textbf{Basis} & Statistical inference over artifacts & Cryptographic signature and metadata \\ \hline
-        \textbf{Confidence} & Probabilistic; can be wrong & Deterministic, if the signature is intact \\ \hline
-        \textbf{Weakness} & Loses ground as generators improve & Requires adoption across creation tools and platforms \\ \hline
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}p{6.0cm} >{\raggedright\arraybackslash}p{6.0cm} @{}}
+        \toprule
+        \rowcolor{gray!15}
+        \textbf{Aspect} & \textbf{Detection} & \textbf{Provenance} \\
+        \midrule
+        \textbf{Question asked} & Does this look fake? & Can we prove where this came from? \\
+        \midrule
+        \textbf{Basis} & Statistical inference over artifacts & Cryptographic signature and metadata \\
+        \midrule
+        \textbf{Confidence} & Probabilistic; can be wrong & Deterministic, if the signature is intact \\
+        \midrule
+        \textbf{Weakness} & Loses ground as generators improve & Requires adoption across creation tools and platforms \\
+        \bottomrule
     \end{tabular}
     \caption{Detection asks whether content looks fake; provenance asks whether its origin can be proven.}
     \label{tab:detection-vs-provenance}
@@ -322,14 +338,20 @@ The guarantees required of a detection system differ sharply by domain, as summa
 
 \begin{table}[H]
     \centering
-    \renewcommand{\arraystretch}{1.5}
-    \begin{tabular}{|p{3.6cm}|p{5.5cm}|p{5.5cm}|}
-        \hline
-        \textbf{Domain} & \textbf{Typical Use} & \textbf{Primary Requirement} \\ \hline
-        Social platforms & Upload scanning, content labeling & High throughput, low latency \\ \hline
-        FinTech and identity & Fraud prevention, liveness checks & Low false-negative rate \\ \hline
-        Courts and forensics & Evidence auditing, forensic verification & High explainability, legal defensibility \\ \hline
-        Government and elections & Statement verification, media integrity & Public trust, rapid response \\ \hline
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{@{} >{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}p{5.5cm} >{\raggedright\arraybackslash}p{5.5cm} @{}}
+        \toprule
+        \rowcolor{gray!15}
+        \textbf{Domain} & \textbf{Typical Use} & \textbf{Primary Requirement} \\
+        \midrule
+        Social platforms & Upload scanning, content labeling & High throughput, low latency \\
+        \midrule
+        FinTech and identity & Fraud prevention, liveness checks & Low false-negative rate \\
+        \midrule
+        Courts and forensics & Evidence auditing, forensic verification & High explainability, legal defensibility \\
+        \midrule
+        Government and elections & Statement verification, media integrity & Public trust, rapid response \\
+        \bottomrule
     \end{tabular}
     \caption{Representative application domains for deepfake detection and their primary requirements.}
     \label{tab:applications}
@@ -384,22 +406,30 @@ Algorithm~\ref{alg:pipeline} summarizes the operational logic of a layered detec
 \section{Challenges and Future Directions}
 \label{sec:challenges}
 
-Table~\ref{tab:challenges} summarizes the main challenges facing deepfake detection today and the directions in which the field is moving to address them.
+Despite the progress surveyed above, several open challenges limit how far current detection and provenance methods can be trusted in 
+practice. Each is paired below with the direction the field is taking in response.
 
-\begin{table}[H]
-    \centering
-    \renewcommand{\arraystretch}{1.6}
-    \begin{tabular}{|p{6cm}|p{6cm}|}
-        \hline
-        \textbf{Challenge} & \textbf{Direction of Response} \\ \hline
-        Detectors trained on one generator family generalize poorly to another, because each generation method leaves a different artifact signature. & Multimodal detectors that fuse image, video, and audio cues, rather than relying on any single artifact. \\ \hline
-        Detection accuracy measured today decays as new generation techniques are released (Section~\ref{subsec:cat-mouse}). & Continuous, ongoing verification rather than a one-time trained model. \\ \hline
-        Watermarking and provenance require every creation tool and platform to participate before they are reliable. & Standardized provenance by default, led by initiatives such as C2PA. \\ \hline
-        Fully automated decisions carry legal and ethical risk in high-stakes domains such as courts and elections. & Human-in-the-loop systems, where the model flags content and a person makes the final judgment. \\ \hline
-    \end{tabular}
-    \caption{Key challenges in deepfake detection and the corresponding future directions.}
-    \label{tab:challenges}
-\end{table}
+\begin{itemize}
+    \item \textbf{Poor generalization across generators.} Detectors trained on one generator family generalize poorly to another, 
+    because each generation method leaves a different artifact signature. \\
+    \textit{Response:} Multimodal detectors that fuse image, video, and audio cues, rather than relying on any single artifact.
+
+    \item \textbf{Accuracy decay over time.} Detection accuracy measured today decays as new generation techniques 
+    are released (Section~\ref{subsec:cat-mouse}). \\
+    \textit{Response:} Continuous, ongoing verification rather than a one-time trained model.
+
+    \item \textbf{Incomplete provenance adoption.} Watermarking and provenance require every creation tool and 
+    platform to participate before they are reliable. \\
+    \textit{Response:} Standardized provenance by default, led by initiatives such as C2PA.
+
+    \item \textbf{Risk of full automation.} Fully automated decisions carry legal and ethical risk in high-stakes 
+    domains such as courts and elections. \\
+    \textit{Response:} Human-in-the-loop systems, where the model flags content and a person makes the final judgment.
+\end{itemize}
+
+Taken together, these directions point toward detection systems that are multimodal, continuously updated, standardized at 
+the point of creation, and paired with human judgment in consequential decisions — rather than a single static classifier deployed 
+once and trusted indefinitely.
 
 % =====================================================
 \section{Conclusion}
