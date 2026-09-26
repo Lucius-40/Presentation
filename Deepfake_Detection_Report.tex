@@ -45,9 +45,11 @@
     \begin{center}
         \vspace*{1.2cm}
         {\Large \textbf{BANGLADESH UNIVERSITY OF ENGINEERING AND TECHNOLOGY}}
+        
         \vspace{1.0cm}
         {\large \textbf{DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING}}
         \vspace{1.8cm}
+        
         {\large \textbf{Course No:} CSE 200} \\[0.35cm]
         {\large \textbf{Course Title:} Technical Writing and Presentation}
 
@@ -431,41 +433,36 @@ Algorithm~\ref{alg:pipeline} summarizes the operational logic of a layered detec
 \section{Challenges and Future Directions}
 \label{sec:challenges}
 
-Despite the progress surveyed above, several open challenges limit how far current detection and provenance methods can be trusted in 
-practice. Each is paired below with the direction the field is taking in response.
+Sections~\ref{sec:detection} and~\ref{sec:defense} show what passive detection and proactive provenance can do under controlled conditions; three difficulties determine whether they hold up in deployment. First, detectors generalize poorly across generators: a systematic review of cross-dataset benchmarks found accuracy declines of roughly 11\% for transformer-based detectors and over 15\% for CNN-based detectors when tested against an unseen generator family \cite{raza2026review}, and the field's response is domain-generalized and meta-learning detectors trained to be invariant to generator identity rather than tuned to one \cite{nguyenle2026survey}. Second, a detector or a watermark can be evaded deliberately rather than merely outdated: small, imperceptible perturbations have been shown to flip a detector's decision or strip an embedded watermark, and such attacks transfer across schemes the adversary never directly queried \cite{jiang2023evading}. Third, the trust infrastructure behind provenance is itself imperfect: an independent 2026 security analysis found the C2PA specification incomplete and open to forgery in places, with one hardware vendor forced to revoke every content credential it had issued after a signing flaw \cite{golaszewski2026c2pa} -- even as the European Union's AI Act now legally requires this kind of provenance marking, with Article~50 obligations in force from 2~August~2026 and fines of up to 3\% of global turnover \cite{euaiact2024}. Table~\ref{tab:challenges} summarizes these challenges alongside the field's response.
 
-\begin{itemize}
-    \item \textbf{Poor generalization across generators.} Detectors trained on one generator family generalize poorly to another, 
-    because each generation method leaves a different artifact signature. \\
-    \textit{Response:} Multimodal detectors that fuse image, video, and audio cues, rather than relying on any single artifact.
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|p{4.4cm}|p{5.8cm}|p{4.0cm}|}
+        \hline
+        \textbf{Challenge} & \textbf{Evidence} & \textbf{Response} \\ \hline
+        Poor cross-generator generalization & Cross-dataset AUC drops $\sim$11\% (transformer) to $>$15\% (CNN) \cite{raza2026review} & Domain-generalized, meta-learning detectors \cite{nguyenle2026survey} \\ \hline
+        Adversarial evasion of detectors/watermarks & Imperceptible perturbations flip decisions or strip watermarks \cite{jiang2023evading} & Adversarially hardened detectors and watermarks \\ \hline
+        Gaps in provenance trust infrastructure & C2PA found incomplete; credential revocations have occurred \cite{golaszewski2026c2pa} & Independent audits, stronger CA infrastructure \\ \hline
+        Regulation outpacing technical readiness & EU AI Act Article~50 mandates marking from Aug.\ 2026 \cite{euaiact2024} & Standardized provenance with detection as fallback \\ \hline
+        Risk of full automation & Legal/ethical risk without human review (Section~\ref{subsec:where}) & Human-in-the-loop review \\ \hline
+    \end{tabular}
+    \caption{Key challenges in deepfake detection and the corresponding direction of response.}
+    \label{tab:challenges}
+\end{table}
 
-    \item \textbf{Accuracy decay over time.} Detection accuracy measured today decays as new generation techniques 
-    are released (Section~\ref{subsec:cat-mouse}). \\
-    \textit{Response:} Continuous, ongoing verification rather than a one-time trained model.
-
-    \item \textbf{Incomplete provenance adoption.} Watermarking and provenance require every creation tool and 
-    platform to participate before they are reliable. \\
-    \textit{Response:} Standardized provenance by default, led by initiatives such as C2PA.
-
-    \item \textbf{Risk of full automation.} Fully automated decisions carry legal and ethical risk in high-stakes 
-    domains such as courts and elections. \\
-    \textit{Response:} Human-in-the-loop systems, where the model flags content and a person makes the final judgment.
-\end{itemize}
-
-Taken together, these directions point toward detection systems that are multimodal, continuously updated, standardized at 
-the point of creation, and paired with human judgment in consequential decisions — rather than a single static classifier deployed 
-once and trusted indefinitely.
+These directions converge on the same picture: detection that is multimodal and generator-agnostic rather than tuned to one architecture, provenance that is independently audited rather than merely deployed, and human judgment retained for consequential decisions.
 
 % =====================================================
 \section{Conclusion}
 \label{sec:conclusion}
 
-Deepfake generation and deepfake detection are two sides of the same adversarial process described by Equation~\ref{eq:gan-loss}: as generators improve, detectors must improve to match them, and the cycle repeats. We have shown that passive detection, whether based on spatial artifacts (Section~\ref{subsec:spatial}), temporal inconsistency (Section~\ref{subsec:temporal}), or cross-modal mismatch (Section~\ref{subsec:multimodal}), remains useful but is structurally unable to win the race on its own, because it always responds to a generation technique that already exists. Proactive defense through watermarking and content provenance (Section~\ref{sec:defense}) changes the question from ``does this look fake?'' to ``can we prove where this came from?'', and that shift is what makes verification durable even as generation techniques continue to advance.
+Deepfake generation and detection are two sides of the same adversarial process described by Equation~\ref{eq:gan-loss}: as generators improve, detectors must improve to match them, and the cycle repeats. Passive detection, whether based on spatial artifacts (Section~\ref{subsec:spatial}), temporal inconsistency (Section~\ref{subsec:temporal}), or cross-modal mismatch (Section~\ref{subsec:multimodal}), remains useful but cannot win this race alone: it always responds to a technique that already exists, and, as Section~\ref{sec:challenges} showed, its accuracy transfers only partially from one generator to the next. Proactive defense through watermarking and content provenance (Section~\ref{sec:defense}) reframes the question from ``does this look fake?'' to ``can we prove where this came from?'', which is what makes verification durable as generation techniques advance -- though neither a detector nor a watermark is beyond deliberate evasion, and even the provenance standards meant to anchor this side still carry documented security gaps.
 
-The goal of this line of research is not a perfect detector; no fixed classifier can remain accurate indefinitely against a generator trained specifically to defeat it. The realistic goal is a layered ecosystem, combining prevention, detection, and verification (Section~\ref{subsec:defense-in-depth}), in which fabricated media is harder to spread convincingly and genuine media is easier to verify. As the underlying technology matures, we expect the balance to continue shifting from after-the-fact detective work toward built-in, cryptographically provable authenticity.
-
+The goal, then, is not a perfect detector; no fixed classifier stays accurate indefinitely against a generator, or an adversary, built specifically to defeat it. The realistic goal is a layered ecosystem combining prevention, detection, and verification (Section~\ref{subsec:defense-in-depth}), each independently audited and continuously updated, so that fabricated media is harder to spread convincingly and genuine media is easier to verify. With the EU AI Act now requiring machine-readable marking of synthetic content \cite{euaiact2024}, this shift is no longer only academic: provenance infrastructure that was optional at the start of this report is fast becoming a legal expectation. As the technology and its governance mature together, we expect the balance to keep shifting from after-the-fact detective work toward built-in, verifiable authenticity.
+\newpage
 % =====================================================
-% Keep these entries visible until in-text citations are added.
+% TO KEEP OR NOT TO KEEP THAT IS THE QUESTION
 \nocite{goodfellow2014,rossler2019,li2020,agarwal2020,c2pa}
 \bibliographystyle{plain}
 \bibliography{Deepfake_Detection_Report}
