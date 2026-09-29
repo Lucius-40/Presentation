@@ -184,12 +184,7 @@ while the decoder reconstructs the input from this representation:
 We train the network by minimizing a reconstruction loss that measures the difference between the original and reconstructed samples. A commonly used formulation is the mean squared error:
 
 \begin{equation}
-\mathcal{L}*{\mathrm{recon}}
-=
-\mathbb{E}*{x\sim\mathcal{D}}
-\left[
-\lVert x-\hat{x}\rVert_2^2
-\right].
+\mathcal{L}_{\mathrm{recon}} = \mathbb{E}_{x\sim\mathcal{D}} \left[ \lVert x-\hat{x}\rVert_2^2 \right].
 \label{eq:recon-loss}
 \end{equation}
 
@@ -200,16 +195,7 @@ For face-swapping applications, a well-known DeepFakes architecture uses a share
 A second important family of generative models is the Generative Adversarial Network (GAN), introduced by Goodfellow et al. \cite{goodfellow2014generative}. A GAN consists of a generator $G_{\theta}$ and a discriminator $D_{\psi}$. The generator attempts to produce synthetic samples that resemble real data, whereas the discriminator attempts to distinguish real samples from generated ones. The original GAN formulation is expressed as the following minimax objective:
 
 \begin{equation}
-\min_{\theta}\max_{\psi}
-V(D_{\psi},G_{\theta})
-=
-\mathbb{E}*{x\sim p*{\mathrm{data}}(x)}
-[\log D_{\psi}(x)]
-+
-\mathbb{E}*{z\sim p(z)}
-\left[
-\log\left(1-D*{\psi}(G_{\theta}(z))\right)
-\right].
+\min_{\theta}\max_{\psi} V(D_{\psi},G_{\theta}) = \mathbb{E}_{x\sim p_{\mathrm{data}}(x)} [\log D_{\psi}(x)] + \mathbb{E}_{z\sim p(z)} \left[ \log\left(1-D_{\psi}(G_{\theta}(z))\right) \right].
 \label{eq:gan-loss}
 \end{equation}
 
