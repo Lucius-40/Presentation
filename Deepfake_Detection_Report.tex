@@ -190,7 +190,7 @@ We train the network by minimizing a reconstruction loss that measures the diffe
 
 This objective encourages the encoder--decoder pair to preserve the important visual information required to reconstruct the input \cite{hinton2006reducing}.
 
-For face-swapping applications, a well-known DeepFakes architecture uses a shared encoder together with separate decoders for the source and target identities. The shared encoder learns a representation that can be used for both identities, while the individual decoders learn to reconstruct the corresponding facial appearance. During inference, we pass the latent representation of one person's face through the decoder associated with another identity. This produces a synthesized face with the target identity while retaining aspects of the source facial configuration \cite{rossler2019faceforensics,perov2020deepfacelab}. This encoder--decoder formulation is one of the classical foundations of modern face-swapping systems.
+For face-swapping applications, a well-known DeepFakes architecture uses a shared encoder together with separate decoders for the source and target identities. The shared encoder learns a representation that can be used for both identities, while the individual decoders learn to reconstruct the corresponding facial appearance. During inference, we pass the latent representation of one person's face through the decoder associated with another identity. This produces a synthesized face with the target identity while retaining aspects of the source facial configuration \cite{rossler2019faceforensics,perov2020deepfacelab,li2020}. This encoder--decoder formulation is one of the classical foundations of modern face-swapping systems.
 
 A second important family of generative models is the Generative Adversarial Network (GAN), introduced by Goodfellow et al. \cite{goodfellow2014generative}. A GAN consists of a generator $G_{\theta}$ and a discriminator $D_{\psi}$. The generator attempts to produce synthetic samples that resemble real data, whereas the discriminator attempts to distinguish real samples from generated ones. The original GAN formulation is expressed as the following minimax objective:
 
@@ -299,7 +299,7 @@ Because these cues depend on the relationship between frames rather than on any 
 \subsection{Multimodal Detection}
 \label{subsec:multimodal}
 
-Voice can be cloned just as convincingly as a face can be swapped, and an attacker who fakes only one modality often leaves the other unchanged, which creates an inconsistency that can be measured directly. The most reliable cue in this category is lip-sync mismatch: the shape of the mouth in the video should match the phoneme being produced in the audio at every instant, and a mismatch of even a few frames is detectable even when neither the video nor the audio is individually flagged as fake by a single-modality detector.
+Voice can be cloned just as convincingly as a face can be swapped, and an attacker who fakes only one modality often leaves the other unchanged, which creates an inconsistency that can be measured directly. The most reliable cue in this category is lip-sync mismatch: the shape of the mouth in the video should match the phoneme being produced in the audio at every instant, and a mismatch of even a few frames is detectable even when neither the video nor the audio is individually flagged as fake by a single-modality detector \cite{agarwal2020}.
 
 A multimodal detector processes the video stream and the audio stream separately, using a video encoder for the former and an audio encoder in the style of Whisper or wav2vec2 for the latter, and then combines the two streams with a cross-modal transformer that checks whether the acoustic and visual signals are consistent with each other. This cross-checking approach is powerful precisely because it does not require either modality to be individually recognizable as synthetic; it only requires the two to disagree.
 
@@ -369,7 +369,7 @@ to human readers, at the cost of detection reliability on short passages.
 \subsection{Content Provenance Standards}
 \label{subsec:c2pa}
 
-Watermarking answers a narrow question: was this specific pattern present? A broader approach, known as content provenance, attaches a signed record of an asset's history, its origin, its creator, and every edit it has undergone, directly to the file as metadata. The Coalition for Content Provenance and Authenticity (C2PA) is the leading industry standard in this space; it defines \textit{Content Credentials} that travel with a media file and can be inspected by any compliant viewer. Table~\ref{tab:detection-vs-provenance} contrasts this provenance-based approach with the detection-based approach of Section~\ref{sec:detection}.
+Watermarking answers a narrow question: was this specific pattern present? A broader approach, known as content provenance, attaches a signed record of an asset's history, its origin, its creator, and every edit it has undergone, directly to the file as metadata. The Coalition for Content Provenance and Authenticity (C2PA) is the leading industry standard in this space \cite{c2pa}; it defines \textit{Content Credentials} that travel with a media file and can be inspected by any compliant viewer. Table~\ref{tab:detection-vs-provenance} contrasts this provenance-based approach with the detection-based approach of Section~\ref{sec:detection}.
 
 \begin{table}[H]
     \centering
@@ -506,9 +506,7 @@ Deepfake generation and detection are two sides of the same adversarial process 
 
 The goal, then, is not a perfect detector; no fixed classifier stays accurate indefinitely against a generator, or an adversary, built specifically to defeat it. The realistic goal is a layered ecosystem combining prevention, detection, and verification (Section~\ref{subsec:defense-in-depth}), each independently audited and continuously updated, so that fabricated media is harder to spread convincingly and genuine media is easier to verify. With the EU AI Act now requiring machine-readable marking of synthetic content \cite{euaiact2024}, this shift is no longer only academic: provenance infrastructure that was optional at the start of this report is fast becoming a legal expectation. As the technology and its governance mature together, we expect the balance to keep shifting from after-the-fact detective work toward built-in, verifiable authenticity.
 \newpage
-% =====================================================
-% TO KEEP OR NOT TO KEEP THAT IS THE QUESTION
-\nocite{li2020,agarwal2020,c2pa}
+
 \bibliographystyle{plain}
 \bibliography{Deepfake_Detection_Report}
 
