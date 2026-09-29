@@ -22,7 +22,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{tikz}
-
+\usepackage{wrapfig}
 \usepackage{array}
 \usepackage[table]{xcolor}
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning, shadows, fit, calc}
@@ -102,31 +102,47 @@
 \vspace{0.5cm}
 
 % =====================================================
+% =====================================================
+% =====================================================
+% =====================================================
+% =====================================================
+% =====================================================
 \section{Introduction}
 \label{sec:introduction}
 
-A \textbf{deepfake} is a piece of synthetic media, typically an image, a video, or an audio clip, in which a deep neural network has replaced or altered a person's likeness so that the result appears authentic. The term is a portmanteau of ``deep learning'' and ``fake,'' and it reflects the underlying technique: a neural network learns the statistical structure of a person's face or voice from real examples and then uses that structure to generate new, fabricated content.
+A \textbf{deepfake} is a high-quality artificial media: either an image, video, or sound, in which artificial neural networks have been used to modify, replace, or create a digital image of a person. The term "deep learning" and "fake" is combined to indicate that such media now can be created with less effort than before: previously, it took much time and experience to make a convincing digital fake, while now, algorithms, trained on a set of digital media, can learn the patterns of a particular person's image or sound and generate new material impersonating this person.
+\vspace{4}
 
-Deepfake technology is not inherently malicious. The same generative models are used for film dubbing, historical restoration, and accessibility tools. However, the ease with which convincing fake media can now be produced has created a genuine problem of trust. A fabricated speech by a public official, a cloned voice used to authorize a fraudulent wire transfer, or a manipulated video used to harass an individual are no longer hypothetical scenarios; each has already occurred. Because a single realistic fake can spread faster than a correction, the cost of being wrong about authenticity has grown substantially.
 
-This report is organized around three questions that mirror the stages of the deepfake life cycle.
+
+While generative AI could be used for good, such as dubbing foreign films or storing information about history, its availability for everyone has compromised confidence in the global information ecosystem. The ability to create forgeries has fundamentally undermined trust in media as a whole, resulting in a documented crisis of trust. Highlighting the scale of this issue, the \textit{Deepfakes Statistics | 2026 Sourced Report} reveals that 74\% of global consumers are now worried about the societal impact of deepfakes, with synthetic media projected to account for up to 70\% of crypto-related crimes in the near future \cite{deepfakestats2026}. This could take the form of false geopolitical information that has been made to influence the masses, or even fraud, such as using someone’s voice to withdraw funds. There are many other ways that confidence in the global information ecosystem could be compromised. On a personal level, people may fear that their digital identities are being misused or abused. Moreover, there are reports of a ``Liar’s Dividend’’ – the possibility that forgeries have created an environment of distrust so that genuine evidence of someone’s wrongdoing might itself be dismissed as fake.
+\begin{figure}[h]
+    \centering
+    \vspace{-10pt}
+    \includegraphics[width=0.55\textwidth]{images/stat.png}
+    \caption{Evolution of deepfake-related publications from 2018 to 2024 across Scopus and Web of Science databases, illustrating the rapid acceleration of academic focus on synthetic media.}
+    \label{fig:pub-evolution}
+    \vspace{-10pt}
+\end{figure}
+
+This report examines the deepfake ecosystem by addressing three core stages of the synthetic media life cycle:
 \begin{itemize}
-    \item How is synthetic media generated? (Section~\ref{sec:generation})
-    \item How can synthetic media be detected after it has been created? (Section~\ref{sec:detection})
-    \item How can the origin of media be proven before it is ever questioned? (Section~\ref{sec:defense})
+    \item \textbf{Generation:} How is synthetic media architected and mathematically optimized? (Section~\ref{sec:generation})
+    \item \textbf{Detection:} How can algorithms identify the spatial and temporal artifacts left behind by generative models? (Section~\ref{sec:detection})
+    \item \textbf{Prevention:} How can cryptographic provenance and watermarking verify media origin before deception occurs? (Section~\ref{sec:defense})
 \end{itemize}
-We conclude by comparing these approaches, listing domains where detection is already deployed, and outlining open challenges for the field (Sections~\ref{sec:applications}--\ref{sec:conclusion}).
-
+We conclude by evaluating the adversarial limitations of passive detection, surveying real-world deployment challenges, and exploring the necessity of a layered defense-in-depth strategy (Sections~\ref{sec:applications}--\ref{sec:conclusion}).
 % =====================================================
 \section{Generation of Deepfake Media}
 \label{sec:generation}
 
-Before detection can be discussed meaningfully, we must understand what a detector is looking for. This section describes the general architecture used to generate face- and voice-based deepfakes and the mathematical objective that drives training.
-
+In order to detect synthetic media, it is essential to understand what processes are used to create them. This section will describe standard deep learning architectures used for identity swapping and reenactment, as well as the mathematical objectives which they are optimized towards.
 \subsection{General Architecture}
 \label{subsec:gen-architecture}
 
-Most face-swapping and face-reenactment systems share a common structure, illustrated in Figure~\ref{fig:gen-architecture}. Two inputs are required: a \textit{source identity}, which supplies the face or voice to be inserted, and a \textit{target context}, which supplies the video or audio in which that identity should appear. Both inputs are passed to a deep learning engine, most commonly an autoencoder or a Generative Adversarial Network (GAN), which encodes each input into a compact latent representation and then decodes that representation into a synthetic output that combines the identity of the source with the motion, lighting, and background of the target.
+The majority of contemporary face-swapping and voice-cloning systems rely on an encoder-decoder framework, frequently augmented by adversarial training. The pipeline, illustrated in Figure~\ref{fig:gen-architecture}, requires two distinct inputs: a \textit{source identity} (the target face or voice to be injected) and a \textit{target context} (the background, lighting, and semantic motion of the destination media). 
+
+The deep learning engine is tasked with decoupling these attributes. The encoder maps the inputs into a lower-dimensional \textit{latent representation}, effectively isolating the source's biometric identity from the target's expressions and environmental context. The decoder then reconstructs this compressed data into a synthetic output that flawlessly superimposes the source identity onto the target's movements and environment.
 
 \begin{figure}[H]
     \centering
@@ -138,55 +154,95 @@ Most face-swapping and face-reenactment systems share a common structure, illust
     ]
         \node[imgbox] (src) at (0,1.3) {Source Identity\\ \small (face / voice)};
         \node[imgbox] (tgt) at (0,-1.3) {Target Context\\ \small (video / audio)};
-        \node[net] (engine) at (4.8,0) {Deep Learning Engine\\ \small (Autoencoder / GAN)\\[0.15cm] $\downarrow$ Latent Representation $\downarrow$\\ Reconstruction};
+        \node[net] (engine) at (4.8,0) {Deep Learning Engine\\ \small (Autoencoder / GAN)\\[0.15cm] $\downarrow$ Latent Space $\downarrow$\\ Reconstruction};
         \node[outbox] (out) at (9.6,0) {Synthetic\\Output};
         \draw[arrowline] (src.east) -- (engine.west |- src.east);
         \draw[arrowline] (tgt.east) -- (engine.west |- tgt.east);
         \draw[arrowline] (engine.east) -- (out.west);
     \end{tikzpicture}
-    \caption{General deepfake generation pipeline. A source identity and a target context are encoded into a shared latent space and decoded into a synthetic output.}
+    \caption{General deepfake generation pipeline. A source identity and a target context are compressed into a shared latent space and decoded into a unified synthetic output.}
     \label{fig:gen-architecture}
 \end{figure}
 
 \subsection{Mathematical Formulation}
 \label{subsec:gen-math}
 
-Let $x$ denote an input image, video frame, or audio segment drawn from a training dataset $\mathcal{D}$. An autoencoder-based generator consists of an encoder $E_\phi$ and a decoder $G_\theta$, where $\phi$ and $\theta$ are learned parameters. The encoder maps the input to a latent vector $z = E_\phi(x)$, and the decoder reconstructs an output $\hat{x} = G_\theta(z)$. Training minimizes the reconstruction loss
-\begin{equation}
-    \mathcal{L}_{\text{recon}} = \mathbb{E}_{x \sim \mathcal{D}} \left[ \lVert x - \hat{x} \rVert_2^2 \right],
-    \label{eq:recon-loss}
-\end{equation}
-where $\lVert \cdot \rVert_2$ denotes the Euclidean norm. A face-swapping system typically trains one shared encoder alongside two separate decoders, one for each identity, so that a face encoded from person A can be decoded through person B's decoder to produce a face that has A's expression and B's identity.
+Deepfake generation relies on deep neural networks to learn representations of facial appearance, identity, and motion from training data. Among the earlier approaches to face swapping, autoencoder-based architectures played an important role, while more recent systems have incorporated adversarial learning and other generative techniques \cite{tolosana2020deepfakes,perov2020deepfacelab,pei2024deepfake}.
 
-Many modern generators improve realism further by pairing the decoder $G_\theta$ with a discriminator $D_\psi$, forming a Generative Adversarial Network. The discriminator is trained to distinguish real data from generated data, while the generator is trained to fool the discriminator. This adversarial relationship is expressed as the minimax objective
-\begin{equation}
-    \min_{\theta} \max_{\psi} \; V(D_\psi, G_\theta) = \mathbb{E}_{x \sim \mathcal{D}} \left[ \log D_\psi(x) \right] + \mathbb{E}_{z \sim p(z)} \left[ \log \left( 1 - D_\psi(G_\theta(z)) \right) \right],
-    \label{eq:gan-loss}
-\end{equation}
-where $p(z)$ is a prior distribution, often Gaussian, from which latent vectors are sampled. As training proceeds, $D_\psi$ becomes better at spotting fakes, which in turn forces $G_\theta$ to produce increasingly realistic output; this adversarial pressure is precisely what makes GAN-based deepfakes difficult to detect by eye. It is also the same adversarial pattern, generator against discriminator, that reappears later at the level of the entire field, where a detector plays the role of $D_\psi$ and a new generation technique plays the role of $G_\theta$ (Section~\ref{subsec:cat-mouse}).
+Let $x$ denote an input sample, such as a facial image or an aligned video frame, drawn from a training dataset $\mathcal{D}$. An autoencoder consists of an encoder $E_{\phi}$ and a decoder $G_{\theta}$, parameterized by $\phi$ and $\theta$, respectively. The encoder maps the input into a lower-dimensional latent representation,
 
-\subsection{Illustrative Example}
+\begin{equation}
+z = E_{\phi}(x),
+\label{eq:encoder}
+\end{equation}
+
+while the decoder reconstructs the input from this representation,
+
+\begin{equation}
+\hat{x} = G_{\theta}(z).
+\label{eq:decoder}
+\end{equation}
+
+The network can be trained by minimizing a reconstruction loss that measures the difference between the original and reconstructed samples. A commonly used formulation is the mean squared error:
+
+\begin{equation}
+\mathcal{L}*{\mathrm{recon}}
+=
+\mathbb{E}*{x\sim\mathcal{D}}
+\left[
+\lVert x-\hat{x}\rVert_2^2
+\right].
+\label{eq:recon-loss}
+\end{equation}
+
+This objective encourages the encoder--decoder pair to preserve the important visual information required to reconstruct the input \cite{hinton2006reducing}.
+
+For face-swapping applications, a well-known DeepFakes architecture uses a shared encoder together with separate decoders for the source and target identities. The shared encoder learns a representation that can be used for both identities, while the individual decoders learn to reconstruct the corresponding facial appearance. During inference, the latent representation of one person's face can be passed through the decoder associated with another identity, producing a synthesized face with the target identity while retaining aspects of the source facial configuration \cite{rossler2019faceforensics,perov2020deepfacelab}. This encoder--decoder formulation is one of the classical foundations of modern face-swapping systems.
+
+A second important family of generative models is the Generative Adversarial Network (GAN), introduced by Goodfellow et al. \cite{goodfellow2014generative}. A GAN consists of a generator $G_{\theta}$ and a discriminator $D_{\psi}$. The generator attempts to produce synthetic samples that resemble real data, whereas the discriminator attempts to distinguish real samples from generated ones. The original GAN formulation is expressed as the following minimax objective:
+
+\begin{equation}
+\min_{\theta}\max_{\psi}
+V(D_{\psi},G_{\theta})
+=
+\mathbb{E}*{x\sim p*{\mathrm{data}}(x)}
+[\log D_{\psi}(x)]
++
+\mathbb{E}*{z\sim p(z)}
+\left[
+\log\left(1-D*{\psi}(G_{\theta}(z))\right)
+\right].
+\label{eq:gan-loss}
+\end{equation}
+
+Here, $p_{\mathrm{data}}(x)$ represents the distribution of real training samples and $p(z)$ denotes the prior distribution from which the generator's latent input is sampled. The discriminator maximizes this objective by correctly distinguishing real and generated samples, while the generator minimizes it by producing samples that are increasingly difficult for the discriminator to distinguish from real data \cite{goodfellow2014generative}. Adversarial training can therefore encourage greater perceptual realism in generated facial content, although GANs represent only one of several generative approaches used in deepfake systems \cite{pei2024deepfake}.
+ 
+\subsection{Visual Comparison: Original vs. Deepfake}
 \label{subsec:gen-example}
 
-Figure~\ref{fig:gen-example} shows a single face-swap example that follows the pipeline of Figure~\ref{fig:gen-architecture}: a source image supplies the identity, a target image supplies the pose and background, and the outcome is a synthetic frame in which the source identity has been transferred onto the target context. The example reused from our presentation slides is suitable for this figure; no new image is required here.
+To illustrate the output of the generative pipelines discussed above, Figure~\ref{fig:original-vs-fake} provides a side-by-side visual comparison of an authentic facial image and its synthetically manipulated counterpart. While the original image captures natural biometric features, realistic skin textures, and physically accurate environmental lighting, the synthetic deepfake alters these attributes to superimpose a new identity. 
+
+Although modern adversarial networks are capable of synthesizing highly convincing forgeries that easily deceive the human eye, forensic analysis often reveals microscopic inconsistencies in the manipulated image. Subtle artifacts—such as unnaturally smoothed skin, inconsistent reflections, or blending errors around the facial boundaries—serve as the foundational signals for the detection algorithms discussed in Section~\ref{sec:detection}.
 
 \begin{figure}[H]
     \centering
-    \begin{tikzpicture}[
-        ph/.style={rectangle, draw, thick, fill=gray!8, minimum width=3.4cm, minimum height=2.1cm, align=center},
-        arrowline/.style={-{Latex[length=3mm]}, thick}
-    ]
-        % \node[ph] (s) at (0,0) {\includegraphics[width=3.1cm]{report_images/example_source.png}};
-        \node[ph] (s) at (0,0) {Source Image};
-        % \node[ph] (t) at (5.2,0) {\includegraphics[width=3.1cm]{report_images/example_target.png}};
-        \node[ph] (t) at (5.2,0) {Target Image};
-        % \node[ph, fill=red!8] (o) at (10.4,0) {\includegraphics[width=3.1cm]{report_images/example_output.png}};
-        \node[ph, fill=red!8] (o) at (10.4,0) {Outcome\\ \small (Deepfake)};
-        \draw[arrowline] (s.east) -- (t.west);
-        \draw[arrowline] (t.east) -- (o.west);
-    \end{tikzpicture}
-    \caption{Source, target, and outcome for a single face-swap example (reuse \texttt{example\_source}, \texttt{example\_target}, \texttt{example\_output} from the presentation).}
-    \label{fig:gen-example}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        % Replace 'original.png' with your actual file name
+        \includegraphics[width=\textwidth]{images/original.png} 
+        \caption{Original Image}
+        \label{fig:original}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        % Replace 'deepfake.png' with your actual file name
+        \includegraphics[width=\textwidth]{images/deepfake.png}
+        \caption{Synthetic Deepfake}
+        \label{fig:deepfake}
+    \end{subfigure}
+    \caption{A side-by-side comparison of an authentic frame and a manipulated deepfake, demonstrating both the photorealism of generative models and the subtle artifacts they leave behind.}
+    \label{fig:original-vs-fake}
 \end{figure}
 
 % =====================================================
