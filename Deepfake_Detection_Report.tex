@@ -242,7 +242,6 @@ Detection strategies fall into two broad categories, summarized in Table~\ref{ta
         \rowcolor{gray!15}
         \textbf{Aspect} & \textbf{Passive Detection} & \textbf{Proactive Defense} \\
         \midrule
-        \hline
         \textbf{When it acts} & After media has been created & At the moment media is created \\
         \hline
         \textbf{Method} & Examines media for hidden artifacts left by the generation process & Embeds a cryptographic watermark or provenance record into the media \\
@@ -360,7 +359,7 @@ biasing an otherwise-arbitrary choice according to a hidden, deterministic funct
 Critically, this approach preserves output fidelity: every word in a watermarked output remains a word the model could have 
 produced anyway, with nothing added to the text and no hidden characters inserted. Detectability is therefore statistical 
 rather than lexical — no individual sentence appears unusual, and the signal exists only in aggregate across a sufficiently 
-long span of text, requiring roughly 150–200 words for reliable detection. A party holding the key can, in principle, measure 
+long span of text, requiring roughly 150-200 words for reliable detection. A party holding the key can, in principle, measure 
 agreement between the observed token choices and those the keyed process would have generated, yielding a probabilistic estimate 
 of authorship, while the pattern remains statistically invisible to any party lacking the key.
 
