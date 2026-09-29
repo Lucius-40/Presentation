@@ -101,12 +101,7 @@
 
 \vspace{0.5cm}
 
-% =====================================================
-% =====================================================
-% =====================================================
-% =====================================================
-% =====================================================
-% =====================================================
+
 \section{Introduction}
 \label{sec:introduction}
 
@@ -130,7 +125,7 @@ This report examines the deepfake ecosystem by addressing three core stages of t
     \item \textbf{Prevention:} How can cryptographic provenance and watermarking verify media origin before deception occurs? (Section~\ref{sec:defense})
 \end{itemize}
 We conclude by evaluating the adversarial limitations of passive detection, surveying real-world deployment challenges, and exploring the necessity of a layered defense-in-depth strategy (Sections~\ref{sec:applications}--\ref{sec:conclusion}).
-% =====================================================
+
 \section{Generation of Deepfake Media}
 \label{sec:generation}
 
@@ -212,7 +207,6 @@ Although modern adversarial networks are capable of synthesizing highly convinci
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        % Replace 'original.png' with your actual file name
         \includegraphics[width=\textwidth]{images/original.png} 
         \caption{Original Image}
         \label{fig:original}
@@ -220,7 +214,6 @@ Although modern adversarial networks are capable of synthesizing highly convinci
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        % Replace 'deepfake.png' with your actual file name
         \includegraphics[width=\textwidth]{images/deepfake.png}
         \caption{Synthetic Deepfake}
         \label{fig:deepfake}
@@ -228,7 +221,7 @@ Although modern adversarial networks are capable of synthesizing highly convinci
     \caption{A side-by-side comparison of an authentic frame and a manipulated deepfake, demonstrating both the photorealism of generative models and the subtle artifacts they leave behind.}
     \label{fig:original-vs-fake}
 \end{figure}
-% =====================================================
+
 \section{Passive Detection: Finding the Flaws}
 \label{sec:detection}
 
@@ -308,7 +301,7 @@ A multimodal detector processes the video stream and the audio stream separately
 
 Passive detection faces a structural limitation. Every new detection technique that becomes public gives generator designers a specific artifact to correct in the next model version, so detection accuracy that is measured on today's fakes routinely degrades on tomorrow's. This dynamic mirrors the adversarial training objective of Equation~\ref{eq:gan-loss} at the scale of the research community: detectors act as an external discriminator, and generators are iteratively improved to defeat them. Because detection is always one step behind the latest generation technique, passive detection alone cannot be a permanent solution; it must be paired with a proactive strategy, which we discuss next.
 
-% =====================================================
+
 \section{Proactive Defense: Proving Provenance}
 \label{sec:defense}
 
@@ -323,7 +316,7 @@ Verification is the mirror operation of embedding: given a piece of media and th
 
 \begin{figure}[H]
     \centering
-    \resizebox{\textwidth}{!}{%
+    \resizebox{\textwidth}{!}{
     \begin{tikzpicture}[
         node distance=1.0cm and 1.4cm,
         box/.style={rectangle, rounded corners, draw, thick, minimum width=3cm, minimum height=1.1cm, align=center},
@@ -338,7 +331,7 @@ Verification is the mirror operation of embedding: given a piece of media and th
         \draw[arrowline] (embed) -- (media);
         \draw[arrowline] (media) -- (verify);
         \draw[arrowline] (verify) -- (result);
-    \end{tikzpicture}%
+    \end{tikzpicture}
     }
     \caption{Invisible watermarking pipeline: a key-dependent pattern is embedded at generation time and later extracted by a verification system.}
     \label{fig:watermark}
@@ -392,7 +385,7 @@ Watermarking answers a narrow question: was this specific pattern present? A bro
     \label{tab:detection-vs-provenance}
 \end{table}
 
-% =====================================================
+
 \section{Applications and Defense in Depth}
 \label{sec:applications}
 
@@ -467,7 +460,7 @@ Algorithm~\ref{alg:pipeline} summarizes the operational logic of a layered detec
 \end{algorithmic}
 \end{algorithm}
 
-% =====================================================
+
 \section{Challenges and Future Directions}
 \label{sec:challenges}
 
@@ -498,7 +491,7 @@ Sections~\ref{sec:detection} and~\ref{sec:defense} show what passive detection a
 
 These directions converge on the same picture: detection that is multimodal and generator-agnostic rather than tuned to one architecture, provenance that is independently audited rather than merely deployed, and human judgment retained for consequential decisions.
 
-% =====================================================
+
 \section{Conclusion}
 \label{sec:conclusion}
 
