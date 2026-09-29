@@ -490,15 +490,22 @@ Sections~\ref{sec:detection} and~\ref{sec:defense} show what passive detection a
 
 \begin{table}[H]
     \centering
-    \renewcommand{\arraystretch}{1.5}
-    \begin{tabular}{|p{4.4cm}|p{5.8cm}|p{4.0cm}|}
-        \hline
-        \textbf{Challenge} & \textbf{Evidence} & \textbf{Response} \\ \hline
-        Poor cross-generator generalization & Cross-dataset AUC drops $\sim$11\% (transformer) to $>$15\% (CNN) \cite{raza2026review} & Domain-generalized, meta-learning detectors \cite{nguyenle2026survey} \\ \hline
-        Adversarial evasion of detectors/watermarks & Imperceptible perturbations flip decisions or strip watermarks \cite{jiang2023evading} & Adversarially hardened detectors and watermarks \\ \hline
-        Gaps in provenance trust infrastructure & C2PA found incomplete; credential revocations have occurred \cite{golaszewski2026c2pa} & Independent audits, stronger CA infrastructure \\ \hline
-        Regulation outpacing technical readiness & EU AI Act Article~50 mandates marking from Aug.\ 2026 \cite{euaiact2024} & Standardized provenance with detection as fallback \\ \hline
-        Risk of full automation & Legal/ethical risk without human review (Section~\ref{subsec:where}) & Human-in-the-loop review \\ \hline
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{@{} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{5.8cm} >{\raggedright\arraybackslash}p{4.8cm} @{}}
+        \toprule
+        \rowcolor{gray!15}
+        \textbf{Challenge} & \textbf{Evidence} & \textbf{Response} \\
+        \midrule
+        Poor cross-generator generalization & Cross-dataset AUC drops $\sim$11\% (transformer) to $>$15\% (CNN) \cite{raza2026review} & Domain-generalized, meta-learning detectors \cite{nguyenle2026survey} \\
+        \midrule
+        Adversarial evasion of detectors/watermarks & Imperceptible perturbations flip decisions or strip watermarks \cite{jiang2023evading} & Adversarially hardened detectors and watermarks \\
+        \midrule
+        Gaps in provenance trust infrastructure & C2PA found incomplete; credential revocations have occurred \cite{golaszewski2026c2pa} & Independent audits, stronger CA infrastructure \\
+        \midrule
+        Regulation outpacing technical readiness & EU AI Act Article~50 mandates marking from Aug.\ 2026 \cite{euaiact2024} & Standardized provenance with detection as fallback \\
+        \midrule
+        Risk of full automation & Legal/ethical risk without human review (Section~\ref{subsec:where}) & Human-in-the-loop review \\
+        \bottomrule
     \end{tabular}
     \caption{Key challenges in deepfake detection and the corresponding direction of response.}
     \label{tab:challenges}
